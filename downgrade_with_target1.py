@@ -26,13 +26,13 @@ while len(taken1) <= tot1 and len(taken0) <= round(p*tot1):
         data_train = pd.concat([data_train, pd.DataFrame(dt_0.iloc[j, :]).T])
         taken0.append(j)
         
-    inclusion_ratio = len(taken1) / len(taken0)
+    inclusion_ratio = len(taken0) / len(taken1)
     
     if bootstrap == True:
-        if inclusion_ratio <= 1:
+        if inclusion_ratio >= p:
             data_train = pd.concat([data_train, pd.DataFrame(dt_1.iloc[i, :]).T])
             taken1.append(i)
-        if inclusion_ratio >= 1:
+        if inclusion_ratio <= p:
             data_train = pd.concat([data_train, pd.DataFrame(dt_0.iloc[j, :]).T])
             taken0.append(j)
     else:
