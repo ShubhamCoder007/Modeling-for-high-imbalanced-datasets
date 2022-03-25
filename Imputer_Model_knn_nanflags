@@ -1,0 +1,35 @@
+
+
+nanlist = data.isnull().sum()
+
+nancols = []
+for i in range(len(nanlist)):
+    if nanlist[i] > 0:
+        nancols.append(data.columns[i])
+        
+print(nancols)
+
+#Generating nanflags
+for col in nancols:
+    data[col+'_nanflag'] = pd.Series(np.where(data[col].isnull(), 1, 0), data.index) 
+    print(col+'_nanflag --- generated')
+
+
+Training knn for every columns
+knn = {c : KNN(n_neighbors=5, add_indicator=True) for c in nancols}
+imp_pred = []
+for c in nancols:
+    knnlist = nancols.remove(c)
+    print('Preparing KNN imputer: ',c)
+    #X_train, X_test, y_train, y_test = train_test_split(df_knn.drop(c, 1), df_knn[c],
+    #                                               test_size=0.2, random_state=5)
+    X = df_knn.drop(c, 1)
+    y = df_knn[c]
+    #X = X.fillna(0)
+    knn[c].fit(X, y)
+    knn[c].fit(X)
+    y_pred = knn[c].transform(X)
+    acc = accuracy_score(y, y_pred, normalize=True)
+    print('Imputer Accuracy:', acc)
+    imp_pred.append(y_pred)
+        
