@@ -1,0 +1,3 @@
+for the features being considered evaluate its correlation wrt to other features.
+consider the correlated feature and by grouping impute data to the required feature.
+If thats also missing go to next index for the correlation matrix.
